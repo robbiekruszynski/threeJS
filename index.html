@@ -35,7 +35,7 @@
     let texture = new THREE.TextureLoader( ).load('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
     let material = new THREE.MeshPhongMaterial( {map: texture} );
     material.bumpMap= new THREE.TextureLoader().load('https://richardandersson.net/wp-content/uploads/2016/08/Earth.Bump_21600x10800.jpg');
-    material.bumpScale = .005;
+    material.bumpScale = .05;
     material.specularMap = new THREE.TextureLoader().load('http://blog.apoapsys.com/assets/melted-ice/melted-ice-specular-8192x4096.jpg')
     material.specular  = new THREE.Color('grey')
     let cloudGeometry   = new THREE.SphereGeometry(0.51, 32, 32)
@@ -51,11 +51,15 @@
     let starGeometry  = new THREE.SphereGeometry(90, 32, 32)
     // create the material, using a texture of startfield
     let starMaterial  = new THREE.MeshBasicMaterial()
-    starMaterial.map   = new THREE.TextureLoader().load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/galaxy_starfield.png')
+    starMaterial.map   = new THREE.TextureLoader().load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/galaxy_starfield.png ')
     starMaterial.side  = THREE.BackSide
     // create the mesh based on geometry and material
     let stars  = new THREE.Mesh(starGeometry, starMaterial)
 
+    let issGeometry = new THREE.SphereBufferGeometry(0.0005, 30, 30 );
+    let issMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0xffffff });
+
+    let iss = new THREE.Mesh(issGeometry, issMaterial);
 
 
     var cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial)
@@ -65,25 +69,28 @@
     scene.add( sphere );
     scene.add( cloudMesh );
     scene.add( stars );
+    scene.add( iss );
 
-
-
+    var ambient = new THREE.AmbientLight(0xffffff, 0.25);
     var light = new THREE.DirectionalLight( 0xffffff, 0.75 );
-    light.position.set( 0, 1, 1 ).normalize();
+    // light.position.set( 0, 1, 1 ).normalize();
     scene.add(light);
+    scene.add(ambient);
 
     camera.position.z =1;
 
     //game logic
     let update = function ()
     {
-      sphere.rotation.x += 0.0005;
+      // sphere.rotation.x += 0.0005;
       sphere.rotation.y +=0.0005;
       cloudMesh.rotation.x += 0.0007;
       cloudMesh.rotation.y -= 0.0001;
-      light.position.x = 3 * Math.sin(Date.now() / 24000);
-      light.position.y = 3 * Math.cos((Date.now() / 24000) + 1.6);
-      light.position.z = 3 * Math.cos(Date.now() / 24000);
+      light.position.x = 3;
+      // light.position.y = 3 * Math.cos((Date.now() / 24000) + 1.6);
+      // light.position.z = 3 * Math.cos(Date.now() / 24000);
+      iss.position.x = 0.53125 * Math.sin(Date.now() / 2400);
+      iss.position.z = 0.53125 * Math.cos(Date.now() / 2400);
     };
       // draw scene
     let render = function ()
