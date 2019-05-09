@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>Three.J.S</title>
+
+    <style>
+    body { margin 0; }
+    canvas{width: 100%; height: 100%;};
+    </style>
+  </head>
+
+  <body>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+    let scene = new THREE.Scene ( );
+    let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+    let renderer = new THREE.WebGLRenderer( );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild ( renderer.domElement );
+
+    window.addEventListener( 'resize', function(){
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      renderer.setSize(width, height );
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    } )
+
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+    // create the shape
+    let geometry = new THREE.SphereBufferGeometry( 0.5, 32, 32 );
+
+    //create a material, color or image texture
+    let material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, wireframe: true} );
+    let sphere = new THREE.Mesh(geometry, material );
+    scene.add( sphere );
+
+    camera.position.z =1;
+
+    //game logic
+    let update = function ()
+    {
+      sphere.rotation.x += 0.0005;
+      sphere.rotation.y +=0.0005;
+    };
+      // draw scene
+    let render = function ()
+    {
+      renderer.render( scene, camera );
+
+    };
+    // run game loop (update, render, repeat)
+    let GameLoop = function( )
+    {
+      requestAnimationFrame( GameLoop );
+
+      update( );
+      render( );
+    };
+
+    GameLoop ( );
+    </script>
+  </body>
+</html>
