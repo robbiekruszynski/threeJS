@@ -1,1 +1,1 @@
-![application example](/imgages/earth.gif)
+![application example](/images/earth.gif)
